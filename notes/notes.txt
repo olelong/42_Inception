@@ -1,0 +1,80 @@
+**************** Inception ****************
+
+-------------------------------------
+
+SUJET
+
+-> Réaliser le projet dans une vm.
+-> Utiliser docker-compose
+
+-> Chaque image Docker doit porter le même nom que le service concerné.
+-> Container build sous Alpine Linux ou Debian Buster.
+
+-> Chacun possède son propre Makefile.
+
+TODO :
+
+• Un container Docker contenant NGINX avec TLSv1.2 ou TLSv1.3 uniquement.
+• Un container Docker contenant WordPress + php-fpm (installé et configuré) uniquement sans nginx.
+• Un container Docker contenant MariaDB uniquement sans nginx.
+• Un volume contenant votre base de données WordPress.
+• Un second volume contenant les fichiers de votre site WordPress.
+• Un docker-network qui fera le lien entre vos containers
+
+->Ligne network présente dans le fichier docker-compose.yml.
+
+
+-------------------------------------
+
+NGINX
+
+
+-> Qu'est ce que c'est? C'est un logiciel libre de serveur Web ainsi qu'un proxy inversé.
+
+L'utilisation la plus fréquente de NGINX est de le configurer comme un serveur Web classique pour
+servir des fichiers statiques.
+
+-------------------------------------
+
+MARIADB
+
+-> Qu'est ce que c'est? MariaDB est un système de gestion de base de données. 
+Il est 100% compatible avec MySQL.
+MariaDB se base sur le code source de MySQL 5.1. Il s'agit donc d'un fork plus communautaire et ouvert que MySQL. 
+Il s'avère aussi plus performant selon certaines études. Il est utilisé comme serveur MySQL par 
+défaut sur Debian. Sur Ubuntu cependant, c'est toujours MySQL qui est proposé par défaut.
+
+-------------------------------------
+
+WORDPRESS
+
+-> 2 utilisateurs dans la base de données dont un Admin.
+
+-> Qu'est ce que c'est? C'est un système de gestion de contenu gratuit, libre et open source.
+Ce logiciel écrit en PHP et repose sur une base de données MySQL.
+
+-> Interface phpMyAdmin pour accéder a la base de données de Wordpress.
+
+-------------------------------------
+
+DOMAIN_NAME
+
+-> Configurer le nom de domaine "login.42.fr" pour qu'il pointe vers
+notre adresse locale.
+
+-------------------------------------
+
+DOCKER NETWORK
+
+-> Qu'est ce que c'est? Il permet d'établir une  communication entre les conteneurs
+Docker et le monde extérieur via la machine de l'hôte sur laquelle le Docker Daemon est lancé.
+Lorsqu'on utilise des conteneurs Docker, l'isolation du réseau est réalisée a l'aide d'un
+espace de noms de réseau.
+
+Que sont les pilotes réseau de Docker (Docker Network drivers)?
+Docker gère la communication entre les conteneurs en créant un réseau relais par défaut. 
+Ainsi, il n'y a pas a s'occuper de la mise en réseau et l'on peut se concentrer sur la création 
+et l'exécution des conteneurs.
+On peut créer tois différents types de pilotes pret a l'emploi: bridge, host et none.
+Il en existe aussi des définis par l'utilisateur comme overlay et macvlan.
+
