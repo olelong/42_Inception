@@ -78,3 +78,190 @@ et l'exécution des conteneurs.
 On peut créer tois différents types de pilotes pret a l'emploi: bridge, host et none.
 Il en existe aussi des définis par l'utilisateur comme overlay et macvlan.
 
+------------------------------------
+
+EXEMPLE de docker-compose.yml
+
+version: '3.7'
+
+services:
+	application:
+		build: ./docker/build/application
+		volumes:
+			- .:/var/www/app
+		ports:
+			- "80:80"
+		networks:
+			- backend
+		secrets:
+			-
+			source: ssh_key
+			target: /root/.ssh/id_rsa
+	database:
+		image: mariadb:latest
+		volumes:
+			- ./docker/data/database:/var/lib/mysql
+		environment:
+			- 'MYSQL_ALLOW_EMPTY_PASSWORD=yes'
+			- 'MYSQL_DATABASE=application'
+		networks:
+			- backend
+
+secrets:
+	ssh_key:
+		file: ~/.ssh/id_rsa
+
+networks:
+	backend: ~
+
+source: https://write.vanoix.com/emeric/makefile-et-docker-en-dev
+
+-------------------------------------
+
+---------------------------
+BONNES PRATIQUES DOCKERFILE
+---------------------------
+---------------------------
+
+
+Outils existants:
+-----------------
+
+Avant d'entrer dans le cœur du sujet, nous vous proposons une liste des meilleurs projets relatifs à l'écosystème Docker, tous open source et accesibles via Github.
+
+Il existe de nombreux projets ayant pour objectif de faciliter et optimiser la construction d'image Docker :
+
+-	hadolint est un analyseur statique de Dockerfiles, qui (selon moi) est le plus utile parmi tous les analyseurs statiques qui existent.
+-	shellcheck est un analyseur statique de scripts shell. Hadolint utilise shellcheck, mais il est bon de savoir qu'il y a bien 2 outils.
+-	container-diff est un outil d'analyse de contenu une fois l'image construite. Sa fonction principale est de lister les différences de paquets (apt, pip, npm...), de fichiers. Il peut aussi tout simplement les lister. Outil maintenu par Google.
+-	clair est un outil de recherche de failles de sécurité, developpé par RedHat.
+-	distroless représente un groupe d'images Docker, qui possède le strict minimum pour des services compilés statiquement, maintenu par Google.
+-	Awesome Docker list est une liste très complète et bien maintenue de l'écosystème Docker.
+
+
+Bonnes pratiques:
+-----------------
+-	Minimiser la taille de l'image. => La taille finale mais egalement le nombre de couches que l'on ajoute 
+	a chaque directive docker.
+	En diminuant les couches de Dockerfiles, on diminue la surface d'attaque d'une éventuelle intrusion donc c'est
+	plus sécurisé. On opitimise également les temps de chargement sur le réseau, on améliore alors la vitesse de vos services.
+
+	Pour cela: Utiliser une image de base plus petite comme une image alpine ou sans distribution.
+			   Supprimer le cache après avoir installé des paquets.
+	Commande apt get clean
+	rm -rf /var/lib/apt/lists/*
+
+-	Utilisateurs => Essentiel de définir un utilisateur par défaut sans les droits root pour restreindre les
+	comportements indéterminées.
+	ex: 
+		RUN useradd -d /home/myappuser -m -s /bin/bash myappuser \
+	    &&  chown -R myappuser:myappuser /var/www
+		
+		USER myappuser
+
+Dockerfile explicite:
+--------------------
+
+Utiliser les directives EXPOSE et VOLUMES qui peuvent paraitre parfois inutile mais permettent
+une meilleure comprehension.
+
+BASH:
+-----
+
+Utiliser bash en tant que shell pour éviter les failles que peut contenir SHELL.
+		SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
+
+Arguments -ex pas nécessaires.
+
+Exemple :
+
+```
+FROM bearstech/debian-dev:stretch
+
+# On définit un nouveau SHELL avec les différents arguments.
+SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
+
+ENV GOLANG_VERSION=1.10.3
+ENV PATH=/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV GOPATH=/go
+ENV GOROOT=/opt/go
+
+WORKDIR /opt
+RUN curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz \
+    &&  useradd --home-dir /go --create-home --shell /bin/bash go \
+	&&  chmod 755 /go
+
+USER go
+WORKDIR /go
+
+# On remet en place le SHELL par défaut
+SHELL ["/bin/sh", "-c"]
+```
+
+NOTATION ENTRYPOINT ET CMD
+--------------------------
+
+Quelle est la différence, selon vous entre ces deux directives ?
+
+``` CMD /usr/sbin/php-fpm ```
+
+``` CMD ["/usr/sbin/php-fpm"] ```
+
+La première commande est exécutée directement (il s'agit de l'équivalent d'un exec en shell), a contrario, la seconde commande est appelé via un shell. Il en est de même pour l'entrypoint, il faut privilégier la notation Json, avec les crochets.
+
+Il arrive de nombreuses fois que l'entrypoint soit en réalité un script de mise en place pour préparer l'environnement avant d'exécuter la vraie commande spécifiée dans CMD. Privilégiez /bin/sh -c plutôt que exec.
+
+```
+#!/bin/bash
+# Script lancé à l'entrypoint.
+
+# On prépare l'environnment
+# ...
+
+# exec "$@"
+/bin/bash -c "$@"
+```
+
+Il se trouve qu'utiliser exec ne permet pas d'avoir les logs, in fine, avec docker logs, car stdin et stdout sont fermées par défaut lors d'un exec au sein d'un script.
+
+
+PRO TIPS
+--------
+
+=> Hadolint:
+
+Hadolint est une référence en tant qu'analyseur statique sur les Dockerfiles. La manière la plus simple de l'utiliser est via une image Docker.
+
+``` docker run --rm -i hadolint/hadolint < Dockerfile ```
+
+Néanmoins, certains règles par défaut de Hadolint ne sont pas viables pour une image qui doit s'auto-maintenir.
+
+Par exemple, on veut pouvoir faire confiance aux dépôts Debian, pour que la dernière version d'une librairie soit installée.
+
+docker run --rm -i hadolint/hadolint hadolint \
+          --ignore DL3008 \
+          --ignore DL3013 \
+          --ignore DL3016 \
+          - < Dockerfile
+Ces trois règles empêchent de fixer la version d'un paquet avec apt (DL3008), pip (DL3013), et npm (DL3016).
+
+
+VOLUMES
+-------
+La directive VOLUME reste utile, pour un cas particulier : après la directive VOLUME, les dossiers des différents chemins sont créés.
+
+```
+	FROM alpine
+
+	RUN ls /opt
+
+	VOLUME ["/opt/web"]
+
+	RUN ls /opt
+```
+Ainsi, les 2 directives RUN n'affichent pas la même chose.
+
+
+source : https://bearstech.com/societe/blog/securiser-et-optimiser-notre-liste-des-bonnes-pratiques-liees-aux-dockerfiles/
+
+
