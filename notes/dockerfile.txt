@@ -1,0 +1,40 @@
+			/*  DOCKERFILE */
+
+-	FROM : Définit dans le fichier Dockerfile límage que l´on veut utiliser comme base.
+	Cette instruction nést utilisable qu´une seule fois dans un Dockerfile.
+	exemple : FROM debian:9
+
+-	RUN : Permet d´exécuter une commande dans le conteneur
+	exemple : RUN apt-get update -yq #
+			  && apt-get-install curl gnupg -yq
+
+-	ADD :  Permet de copier ou telecharger des fichiers dans l´image.
+	On peut y ajouter les sources de notre application par exemple.
+	Exemple: AD . /app/
+
+-	WORKDIR : Permet de modifier le répertoire courant. Equivalent d´une
+	commande cd.
+	Exemple: WORKDIR /app
+
+-	RUN : Permet d´installer des packages.
+	Exemple: RUN npm install
+
+-	EXPOSE : Indique le port sur lequel l´application écoute.
+	EXPOSE 8080
+
+-	VOLUME : Indique le répertoire l´on veut partager avec l´host.
+
+-	CMD : Cette commande doit toujours être présente et en dernière ligne.
+	Elle permet au conteneur de savoir quelle commande il doit exécuter
+	lors de son démarrage.
+	Exemple: CMD npm run start
+
+.dockerignore: Pour ne pas copier certains fichiers/dossiers dans notre conteneur 
+lors de l´exécution de l´instruction ADD.
+Exemple :
+	node_modules
+	.git
+
+
+
+

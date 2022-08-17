@@ -264,4 +264,38 @@ Ainsi, les 2 directives RUN n'affichent pas la même chose.
 
 source : https://bearstech.com/societe/blog/securiser-et-optimiser-notre-liste-des-bonnes-pratiques-liees-aux-dockerfiles/
 
+---------------------------------------------------------
 
+
+Profitez de l'optimisation Docker
+---------------------------------
+
+Quand on exécute la commande docker build, Docker va créer un conteneur pour chaque instruction, 
+et le résultat sera sauvegardé dans une layer. 
+Le résultat final étant un ensemble de layers qui construisent une image Docker complète.
+
+Mais cela apporte aussi de nombreux avantages. 
+Si une layer ne bouge pas entre deux builds, Docker ne la reconstruira pas. 
+Seules les layers situées après une layer qui se reconstruit seront elles aussi reconstruites.
+
+Vous pouvez ainsi créer de nouvelles images très rapidement, sans devoir attendre indéfiniment le build de votre image.
+
+
+COMMANDE 
+--------
+
+BUILD
+
+docker build -t ocr-docker-build .
+
+=> -t permet de donner un à notre image Docker
+=> Le . est le répertoire où se trouve le Dockerfile.
+
+RUN
+
+docker run -d -p 2368:2368 ocr-docker-build
+
+Vous retrouvez, dans le dossier logs, les logs de votre application, 
+et vous pourrez y accéder sur le port 2368, soit via l'URL http://127.0.0.1:2368.
+
+source: openclassroom
