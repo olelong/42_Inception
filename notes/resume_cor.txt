@@ -1,0 +1,23 @@
+Docker = Une sorte de mini vm, sur laquelle je pourrais ensuite y avoir tous les droits et tout,
+et je pourrais y installer tous les services que je veux.
+
+Ne jamais push un .env, l'ignorer car contient souvent des infos pas a montrer aux autres utilisateurs
+comme le mdp ou autre.
+
+Docker-compose est une sorte de fichier (non docker) qui permet de faire le lien entre 
+les differents dockerfile. Il ne contiendra pas de configurations, il fait juste le lien entre les dockerfiles
+de chaques services et les ports.
+
+Dockerfile permet de faire toutes les configurations necessaires pour l'installation du service.
+
+Pas besoin de hashage pour wordpress car le site le fait automatiquement.
+
+On doit configurer le port 443 qui est celui qui correspond a HTTPS alors que de nos jours
+le navigateur redirige automatiquement vers https. Mais il faut quand meme le mettre dans expose
+pour les services concernes.
+
+Port 3306 = Port par defaut de mySql.
+Port 443 = https.
+
+Chaque service sera EXPOSE sur son port et c'est dans le docker-compose que je pourrais
+faire le lien entre les ports et entre les services.

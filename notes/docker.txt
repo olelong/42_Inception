@@ -1,6 +1,0 @@
-Docker = Une sorte de mini vm, sur laquelle je pourrais ensuite y avoir tous les droits et tout,
-et je pourrais y installer tous les services que je veux.
-
-Ne jamais push un .env, l'ignorer.
-
-
