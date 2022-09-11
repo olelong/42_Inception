@@ -1,0 +1,40 @@
+docker run name
+
+docker search ubuntu: Permet de chercher des images availables sur le docker Hub.
+
+docker pull ubuntu: Permet de telecharger l'image officielle d'ubuntu.
+
+docker images: Pour voir les images qui ont ete telechargees.
+
+docker run -it ubuntu: La combinaison du -i et -t sont des commutateurs donnent un acces shell interactif au conteneur.
+=> Une fois dans le shell du conteneur on peut y installer et faire ce que l'on veut.
+
+docker ps: Pour voir tous les conteneurs actifs.
+docker ps -a: Pour voir tous les conteneurs actifs et inactifs, on ajoute le -a.
+docker ps -l: Pour voir le dernier conteneur creer, on ajoute le -l.
+
+docker start ID: Pour lancer un conteneur arrete. On peut mettre le conteneur ID ou le nom du conteneur.
+
+docker stop ID: Arrete un conteneur qui est lance. (container ID ou nom)
+
+docker rm ID: Remove un conteneur
+
+--name: Lorsqu'on lance un nouveau conteneur et met ce flag pour pouvoir donner un nom a ce conteneur.
+--rm: Pour creer un conteneur qui va se supprimer lui meme apres d'etre arrete.
+
+
+Faire un commit dans un conteneur d'une image docker:
+docker commit -m "What you did to the image" -a "Author Name" container_id repository/new_image_name
+
+Faire un push d'une image docker sur docker hub:
+-	docker login -u docker-registry-username: se log
+-	docker tag sammy/ubuntu-nodejs docker-registry-username/ubuntu-nodejs: pour le casou le username est different du username local.
+-	docker push docker-registry-username/docker-image-name
+
+Faire un pull:
+docker pull docker-registry-name/docker-image-name
+
+
+
+
+
