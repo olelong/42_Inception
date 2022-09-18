@@ -21,3 +21,8 @@ Port 443 = https.
 
 Chaque service sera EXPOSE sur son port et c'est dans le docker-compose que je pourrais
 faire le lien entre les ports et entre les services.
+
+VOIR POUR FAIRE DES VOLUMES PERSISTANTS:
+Car sinon a chaque fois ca creera un nouveau dossier pour les donnees et meme
+en fermant ou detruisant le conteneur les volumes anciens resteront la et ne seront pas \
+supprimes.
