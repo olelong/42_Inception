@@ -24,4 +24,9 @@ services:
 		restart: always
 		environment: .env
 
+secrets:
+	ssh_key:
+		file: 
+
 network:
+	

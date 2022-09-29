@@ -1,0 +1,5 @@
+
+							DOCKER-COMPOSE / MAKEFILE
+
+Docker-Compose = un ensemble de commandes qui vont encapsuler l'accès à Docker. 
+On écrit dans un fichier descriptif, docker-compose.yml.
