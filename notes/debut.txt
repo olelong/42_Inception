@@ -3,3 +3,88 @@
 
 Docker-Compose = un ensemble de commandes qui vont encapsuler l'accès à Docker. 
 On écrit dans un fichier descriptif, docker-compose.yml.
+
+docker compose up -d: install et pull l'image necessaires si elle n'existe pas.
+docker compose up: lance le conteneur docker.
+
+The command docker compose down removes the containers and default network, but preserves your WordPress database.
+The command docker compose down --volumes removes the containers, default network, and the WordPress database.
+
+
+USE VOLUMES
+
+Les volumes sont le mécanisme privilégié pour la persistance des données générées et utilisées par les conteneurs Docker.
+Alors que les bind mounts dépendent de la structure des répertoires et du système d'exploitation de la machine hôte, 
+les volumes sont entièrement gérés par Docker. 
+
+Les volumes présentent plusieurs avantages par rapport aux bind mounts :
+
+- Les volumes sont plus faciles à sauvegarder ou à migrer que les bind mounts.
+- Vous pouvez gérer les volumes à l'aide des commandes Docker CLI ou de l'API Docker.
+- Les volumes fonctionnent sur les conteneurs Linux et Windows.
+- Les volumes peuvent être partagés de manière plus sûre entre plusieurs conteneurs.
+- Les pilotes de volume vous permettent de stocker des volumes sur des hôtes ou des fournisseurs de clouds distants, de chiffrer le contenu des volumes ou d'ajouter d'autres fonctionnalités.
+- Les nouveaux volumes peuvent avoir leur contenu pré-rempli par un conteneur.
+- Les volumes sur Docker Desktop sont beaucoup plus performants que les montages liés des hôtes Mac et Windows.
+En outre, les volumes sont souvent un meilleur choix que la persistance des données dans la couche inscriptible d'un conteneur, car un volume n'augmente pas la taille des conteneurs qui l'utilisent et le contenu du volume existe en dehors du cycle de vie d'un conteneur donné.
+
+Options/flags -v et --mount:
+-- mount est le plus explicite. La plus grande difference entre les deux flags est la syntaxe du -v qui combinent
+toutes les options ensembles dans un seul champ alors que --mount les separent.
+
+-v = --volume
+
+Difference syntaxique entre les flags:
+--mount:
+docker run -d \
+--name devtest \
+--mount source=myvol2,target=/app \
+nginx:latest
+
+-v:
+docker run -d \
+--name devtest \
+-v myvol2:/app \
+nginx:latest
+
+
+Pour lancer un conteneur avec un volume:
+docker run -d \
+--name devtest \
+--mount source=myvol2,target=/app \
+nginx:latest
+
+docker inspect devtest: Permet de verifier que le volume a bien ete creer et bien ete mounted.
+
+Pour tout arreter:
+docker container stop devtest
+docker container rm devtest
+docker volume rm myvol2
+
+Utiliser un volume avec docker-compose:
+
+(Simple docker-compose)
+version: "3.9"
+services:
+  frontend:
+    image: node:lts
+  volumes:
+    - myapp:/home/node/app
+  volumes:
+  myapp:
+
+Use a volume driver
+When you create a volume using docker volume create, or when you start a container which uses a not-yet-created volume, you can specify a volume driver. The following examples use the vieux/sshfs volume driver, first when creating a standalone volume, and then when starting a container which creates a new volume.
+
+Back up a volume:
+For example, create a new container named dbstore:
+  docker run -v /dbdata --name dbstore ubuntu /bin/bash
+Then in the next command, we:
+
+Launch a new container and mount the volume from the dbstore container
+Mount a local host directory as /backup
+Pass a command that tars the contents of the dbdata volume to a backup.tar file inside our /backup directory.
+  docker run --rm --volumes-from dbstore -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /dbdata
+When the command completes and the container stops, we are left with a backup of our dbdata volume.
+
+
