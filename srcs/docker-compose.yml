@@ -1,4 +1,4 @@
-version: '10.13'
+version: '10' #Version de debian:buster
 
 services:
 	nginx:
