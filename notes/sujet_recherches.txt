@@ -145,6 +145,8 @@ Bonnes pratiques:
 	a chaque directive docker.
 	En diminuant les couches de Dockerfiles, on diminue la surface d'attaque d'une éventuelle intrusion donc c'est
 	plus sécurisé. On opitimise également les temps de chargement sur le réseau, on améliore alors la vitesse de vos services.
+	Mais Comment diminuer les couches de dockerfiles??? Et bien, en faisant le moins de commandes possibles dans le dockerfile
+	car chaque instruction est égale a une couche/layer.
 
 	Pour cela: Utiliser une image de base plus petite comme une image alpine ou sans distribution.
 			   Supprimer le cache après avoir installé des paquets.
@@ -210,6 +212,10 @@ Quelle est la différence, selon vous entre ces deux directives ?
 La première commande est exécutée directement (il s'agit de l'équivalent d'un exec en shell), a contrario, la seconde commande est appelé via un shell. Il en est de même pour l'entrypoint, il faut privilégier la notation Json, avec les crochets.
 
 Il arrive de nombreuses fois que l'entrypoint soit en réalité un script de mise en place pour préparer l'environnement avant d'exécuter la vraie commande spécifiée dans CMD. Privilégiez /bin/sh -c plutôt que exec.
+
+De base entrypoint, n'existez pas il n'y avez que CMD. Il etait juste  /bin/sh -c et permettait juste d'executer la string qui venait apres.
+ /bin/sh -c  = entrypoint suivie de "CMD" = la commande a executer. On utilise entrypoint pour modifier la facon dont on execute CMD. C'est tres
+ rarement utilisé!
 
 ```
 #!/bin/bash
@@ -299,3 +305,48 @@ Vous retrouvez, dans le dossier logs, les logs de votre application,
 et vous pourrez y accéder sur le port 2368, soit via l'URL http://127.0.0.1:2368.
 
 source: openclassroom
+
+--------------
+
+Un service = un conteneur qui execute une image
+Une image = Ce qui a ete build par le dockerfile.
+Ca peut etre mon image similaire a celle existante mais avec mes propres configurations.
+
+Un dockerfile = un service = un conteneur.
+
+
+DIFFERENCE VM VS DOCKER:
+
+Docker fait de la Virtualisation legere tandis que la vm fait de la virtualisaton lourde.
+C'est a dire, qu'avec Docker, il y a une meilleure portabilite car si on veut faire tourner une application 
+sur n'importe quel OS ou machine, il suffit d'installer docker et ca fonctionne. Car tout est virtualisé et l'avantage
+par rapport aux vm c'est que c'est beaucoup plus rapide a lancer et a partager. 
+
+Virtualisation lourde? car la vm va lancer tout un OS avec tous les composants, toute une machine est virtualise.
+Docker? Le but est d'avoir qu'un seul process dessus pas plein et des images par lesquelles on part dans les conteneurs
+sont des versions tres light d'OS avec le strict minimum juste pour pouvoir faire tourner un process.
+
+
+HISTORIQUE DES CONTENEURS
+
+Les conteneurs existaient avant docker. Les premiers conteneurs etaient des conteneurs linux. Ils s'appelaient LXC. Mais été
+pas adaptable. Docker a ensuite fait des conteneurs qui s'adapte, ont une bonne portabilite, facile, maleable, s'adaptant a
+n'importe quel projet.
+
+
+DOCKER COMPOSE
+
+Version la plus utilise = 3.
+Ensuite definir ses services.
+Soit on definit une image du service soit on utilise build:
+qui va prendre en parametre le chemin du dockerfile a executer. Il va build le dockerfile donné, l'image
+qui decoule de ce build deviendra celle du service.
+
+Si un conteneur depend d'un autre: utiliser depends on et lui passer le nom du service.
+
+Utiliser environment pour utiliser des variables d'environnements:
+ex:
+	environment:
+		MYSQL_etc name
+
+source: Wael
