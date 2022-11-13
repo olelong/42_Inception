@@ -1,0 +1,263 @@
+						COURS OPENCLASSROOM : 
+	OPTIMISER LE DEPLOIEMENT EN CREANT DES CONTAINERS AVEC DOCKER
+
+MACHINE VIRTUELLE:
+ Virtualisation lourde car necessite de recreer un systeme complet hote pour qu'il ait ses propres ressources.
+- Isolation avec le systeme hote totale.
+
+Contraintes:
+- VM prend du temps a demarrer.
+- VM reserve les ressources (CPU / RAM) sur le systeme hote.
+
+Avantages:
+- Isolee du systeme hote.
+- Les ressources attribuees lui sont totalement reservees.
+- On peut installer differents OS.
+Mais souvent la VM consomme moins que les ressources reservees.
+
+
+
+
+CONTENEURS:
+Un conteneur linux est un processus ou un ensemble de processus 
+isoles du systeme tout en etant leger.
+
+- Virtualisation legere, il ne virtualise pas les ressourses, 
+il ne cree qu'une isolation des processus. Le conteneur partage
+les ressources avec le systeme hote.
+
+Avantages:
+- Ne reserve que les ressources necessaires. On peut allouer 16GO de 
+RAM a notre conteneur mais s'il n'en utilise que 2GO le reste ne sera
+pas verrouille.
+- Demarre rapidement.
+- Donne plus d'autonomie aux developpeurs.
+- Permet de reduire les couts et d'augmenter la densite de l'infrastructure.
+
+Contraintes:
+- Isolation moindre.
+
+
+
+
+DOCKER:
+Autres conteneurs avant: LXC et OpenVZ.
+Vision docker: un conteneur = un processus.
+Environnement unifie et fonctionnel grace a docker.
+Conteneurs DOCKER sont plus flexible et portables et notions
+de stateless et d'immutabilite.
+Docker ne convient pas pour des usages ou il faut faire
+persister de grandes quantites de memoire disque et assurer
+une grande continuite de service.
+
+Stateless / Stateful:
+Sont deux categories de conteneurs.
+Ex 1: Une base de donnees SQL = stateful car stocke un etat
+et si on eteint et rallume la base de donnees et la retrouve
+dans le meme etat de fonctionnement.
+Ex2: Une appli qui ne stocke pas d'etat est stateless. C'est le cas
+pour le protocole HTTP, a chaque nouvelle requete les memes series
+d'actions seront realisees.
+
+Un conteneur est immuable / ne change pas:
+Un conteneur ne doit pas stocker de données qui doivent être pérennes, 
+car il les perdra (à moins que vous les ayez pérennisées). Mais si vous 
+souhaitez en local mettre une base de données dans un conteneur Docker, 
+vous devez créer un volume pour que celui-ci puisse stocker les données 
+de façon pérenne.
+
+Docker est utilisé à tous les niveaux de l'infrastructure 
+(CI / Développement / Production).
+
+
+
+
+DOCKER DAEMON:
+Il traite les requetes API afin de gerer les differents aspects de 
+l'installation tels que les images, les conteneurs ou les volumes de 
+stockage.
+Un DAEMON en general est un type de programme informatique, 
+un processus ou un ensemble de processus qui s'execute en arriere plan
+plutot que sous le controle direct d'un utilisateur.
+Un docker daemon nous permettra donc de gerer des processus en arriere
+plan.
+
+
+
+
+DOCKER HUB:
+Registry officielle de Docker. Une registry est un logiciel
+qui permet de partager des images a d'autres personnes.
+C'est un composant majeur dans l'ecosysteme Docker.
+Avantage de registry:
+- à des développeurs de distribuer des images prêtes à l’emploi 
+et de les versionner avec un système de tags ;
+- à des outils d’intégration en continu de jouer une suite de tests, 
+sans avoir besoin d’autre chose que de Docker ;
+- à des systèmes automatisés de déployer ces applications sur vos 
+environnements de développement et de production.
+
+docker run hello-world:
+Quand vous utilisez cette commande, le daemon Docker va chercher si l'image 
+hello-world est disponible en local. Dans le cas contraire, il va la récupérer 
+sur la registry Docker officielle.
+
+Pour qu'un conteneur reste allume jusqu'a l'arret du service qu'il
+contient on doit ajouter l'argument --detach (-d). Celui-ci permet de ne pas 
+rester attaché au conteneur, et donc de pouvoir lancer plusieurs conteneurs. 
+Nous allons voir dans la section suivante comment utiliser l’argument -d.
+
+
+
+
+DEMARRER UN SERVEUR NGINX:
+docker run -d -p 8080:80 nginx
+Dans cette commande, on utilise deux options:
+	-d: pour detacher le conteneur du processus principal de la console.
+	-p: pour definir l'utilisation de ports. Ici on transfert le trafic du
+	port 8080 vers le port 80 du conteneur et si on se rend a l'adresse
+	http://127.0.0.1:8080, on accede a la page par defaut d'Nginx.
+
+docker exec -ti ID_RETOURNE_LORS_DU_DOCKER_RUN bash:
+Pour si on a besoin de rentrer dans notre conteneur docker pour y effectuer des
+actions. L'argument -ti permet d'avoir un shell bash pleinement operationnel.
+Une fois dans le conteneur, on peut se rendre dans le repertoire ou se trouve
+le fichier index.html pour le modifier avec la commande: cd /usr/share/nginx/html.
+
+Arreter le conteneur docker detach avec:
+docker stop ID_RETOURNE_LORS_DU_DOCKER_RUN.
+Pour le supprimer apres l'avoir arrete:
+docker rm ID_RETOURNE_RUN, qui va detruire le conteneur et son contenu.
+
+
+docker ps: Voir les conteneurs actifs.
+docker images: Afficher les images presentes.
+docker images -a: pour voir l'ensemble des images presentes
+en local sur l'ordi.
+
+
+
+
+POUR NETTOYER LE SYSTEME:
+docker system prune: Pour supprimer l'ensemble des ressources manuelles
+dans Docker.
+Utiles pour supprimer tous les tests effectues de conteneurs.
+Elle supprime:
+- L'ensemble des conteneurs Docker qui ne sont pas en status running ;
+- L'ensemble des réseaux créés par Docker qui ne sont pas utilisés par 
+au moins un conteneur ;
+- L'ensemble des images Docker non utilisées ;
+- L'ensemble des caches utilisés pour la création d'images Docker.
+
+
+
+
+CREER UNE IMAGE DOCKER POUR INSTALLER NODE.JS:
+Chaque instruction donne dans notre dockerfile va creer une nouvelle
+layer correspondant a chaque etape de la construction de l'image ou de
+la recette.
+Ex: Si nous restons dans l'analogie de la cuisine, le Dockerfile permet 
+de connaître notre recette pour faire une pièce montée. Alors, chaque 
+argument de celle-ci crée un nouvel étage sur la pièce montée, nommé layer. 
+Notre but étant de limiter le nombre d'étages, pour que notre pièce 
+montée soit la plus légère et performante possible.
+
+LE DOCKERFILE:
+Premiere chose, definir dans le dockerfile l'image que vous allez utiliser
+comme base grace a l'instruction FROM.
+FROM debian:9
+
+Puis utiliser RUN pour executer une commande dans mon conteneur.
+RUN apt-get update -yq \
+&& apt-get install curl gnupg -yq \
+&& curl -sL https://deb.nodesource.com/setup_10.x | bash \
+&& apt-get install nodejs -yq \
+&& apt-get clean -y
+=> Limiter au maximum le nombre d'instruction RUN afin de limiter le
+nombre de layers creees, et donc de reduire la taille de notre image
+Docker.
+
+Utiliser l'instruction ADD afin de copier ou de telecharger des fichiers
+dans l'image. Ici on ajoutera les sources de notre applications locale.
+ADD . /app/
+
+Utiliser WORKDIR: pour modifier le repertoire courant. Similaire a une 
+commande CD. Toutes les commandes qui suivent seront executees depuis
+le repertoire defini.
+WORKDIR /app
+
+Instruction RUN qui suit et qui permet d'installer le package du 
+projet Node.js:
+RUN npm install
+=> On aurait pu utiliser deux ADD dont un pour ajouter le fichier
+package.json et une fois npm install ajouter un ADD . /app/
+Cela permettrait de reduire l'adherence entre les dependances presentes
+dans le fichier package.json et le code de l'application ce qui fait 
+economiser du temps lors du build de l'image.
+
+EXPOSE 2368 : Permet d'indiquer le port sur lequel l'application ecoute.
+VOLUME /app/logs : Permet d'indiquer quel repertoire vous voulez partager
+avec notre host.
+
+On conclut par CMD qui doit toujours etre presente et permet a notre
+conteneur de savoir quelle commande il doit executer lors du demarrage.
+CMD npm run start
+
+Dockerfile termine, on doit creer un fichier .dockerignore:
+ex: node_modules
+	.git
+
+OPTIMISATION DOCKER:
+Quand on execute la commande docker build, Docker va creer un conteneur
+pour chaque instruction et le resultat sera sauvegarde dans une layer.
+Le resultat final est un ensemble de layer qui construisent une image Docker
+complete.
+
+Avantages:
+- Si une layer ne bouge pas entre deux builds, il ne sera pas
+reconstruit. Seules les layers situees apres une layer qui se reconstruit 
+seront elles aussi reconstruites.
+- Dans notre cas, si vous ajoutez une dépendance dans le fichier package.json, 
+et que vous relancez un build de votre image, vous verrez qu'il n'y a que 
+les layers situées après leADD package.json /app/ qui seront reconstruites ; 
+l'installation de Node.js restera en cache.
+
+CREER NOTRE IMAGE DOCKER:
+docker build -t ocr-docker-build .
+Le -t permet de donner un nom a notre image.
+Le . est le repertoire ou se trouve le dockerfile.
+On lance le conteneur:
+docker run -d -p 2368:3568 ocr-docker-build2
+On retrouve les logs dans le dossier logs et on y accede sur le port 2368
+via http://127.0.0.1:2368.
+
+
+
+RESUME:
+- FROM qui vous permet de définir l'image source ;
+- RUN qui vous permet d’exécuter des commandes dans votre conteneur ;
+- ADD qui vous permet d'ajouter des fichiers dans votre conteneur ;
+- WORKDIR qui vous permet de définir votre répertoire de travail ;
+- EXPOSE qui permet de définir les ports d'écoute par défaut ;
+- VOLUME qui permet de définir les volumes utilisables ;
+- CMD qui permet de définir la commande par défaut lors de l’exécution 
+de vos conteneurs Docker.
+
+
+
+
+DECOUVRIR ET INSTALLER DOCKER COMPOSE:
+Projet: Wordpress avec deux conteneurs: un pour MySQL et un WordPress.
+Docker Compose est un outil ecrit en python qui permet de decrire dans un fichier
+YAML, plusieurs conteneurs comme un ensemble de services.
+Installation necessaire de docker-compose sur linux.
+
+(correcteur discussion)
+DOCKER-COMPOSE vs DOCKER COMPOSE:
+Preferer l'utilisation de docker compose plutot que l'autre car celle ci fait appel a docker
+puis a son composant compose qui est ecrit en GO et est plus recent.
+Docker-compose est une ancienne commande ecrite en python et qui va etre abandonne.
+Le sujet d'inception rajoutera qu il faut utiliser docker compose et non l'autre.
+
+
+
