@@ -259,5 +259,104 @@ puis a son composant compose qui est ecrit en GO et est plus recent.
 Docker-compose est une ancienne commande ecrite en python et qui va etre abandonne.
 Le sujet d'inception rajoutera qu il faut utiliser docker compose et non l'autre.
 
+CLI (Command line interface): Le CLI de Docker Compose et de Docker sont tres proche.
+Ex: Recuperer des images decrites dans le docker-compose.yml et les telecharger
+depuis le docker hub il faut faire un docker-compose pull et si c'etait docker
+la commande serait docker pull.
+Celui de docker-compose est presque le meme que celui de docker ce qui evite
+d'apprendre un nouveau CLI.
+
+STACK DOCKER COMPOSE:
+- Demarrer une stack docker compose:
+Pour lancer la creation de l'ensemble des conteneurs: docker-compose up.
+On y ajoute un -d pour faire tourner les conteneurs en tache de fond.
+=> On appelle stack un ensemble de conteneurs Docker lances via un seul et unique 
+fichier docker compose.
+- Voir le statut: 
+Permet de voir si l'ensemble des conteneurs sont bien dans un etat fonctionnel et
+pret a rendre un service.
+	docker-compose ps
+Qui repond:
+	ADD CONTENT
+- Voir les logs:
+	docker-compose logs -f --tail 5
+Elle permet de voir l'ensemble des logs sur les differents conteneurs de facon continue
+tout en limitant l'affichage aux 5 premieres lignes.
+- Arreter:
+	docker-compose stop
+Parcontre cette commande ne supprime pas les differentes ressources creees par votre stack.
+Ainsi si par la suite on lance la commande docker-compose up -d, l'ensemble de
+la stack sera tout de suite a nouveau fonctionnel.
+- Valider la syntaxe:
+	docker-compose config
+Permet de valider la syntaxe de votre fichier et ainsi d'etre certain de son bon fonctionnement.
+
+LE DOCKER-COMPOSE:
+- version: L'argument version permet de specifier quelle version on souhaite.
+La version 3 est la plus utilisee.
+- Declarer le premier service et son image:
+services:
+	db:
+		image: mysql:5.7
+On decrit le conteneur en definissant un nom qui lui est propre dans notre cas db
+et l'image Docker que nous souhaitons utiliser avec image.
+=> On pourrait utiliser l'argument build en lui specifiant le chemin vers notre
+fichier dockerfile ainsi lors de l'execution de Docker Compose, il aurait 
+construit le conteneur via le dockerfile avant de l'executer.
+- Definir le volume pour faire persister les donnees:
+		volumes:
+			- db_data:/var/lib/mysql
+=> On a vu que les conteneurs docker ne sont pas faits pour faire fonctionner
+des services stateful et une base de donnees est par definition un service stateful.
+Mais nous pouvons utiliser volumes pour stocker l'ensemble du contenu du dossier /var/lib/mysql
+dans un disque persistant. On peut donc grace a volumes garder les donnees en local sur notre host.
+db_data est un volume cree par Docker directement qui permet d'ecrire les donnees sur le disque
+hote sans specifier l'emplacement exact.
+- Definir la politique de redemarrage du conteneur:
+		restart: always
+Un conteneur est par definition monoprocessus, si il rencontre une erreur il peut etre amene
+a s'arreter. Avec restart:always, si le serveur mySQL s'arrete, celui-ci redemarrera
+automatiquement grace a cet argument.
+- Definir les variables d'environnement: environment
+		environment:
+			MYSQL_ROOT_PASSWORD: somewordpress
+			MYSQL_DATABASE: wordpress
+			MYSQL_USER: wordpress
+			MYSQL_PASSWORD: wordpress
+L'image MySQL fournie dispose de plusieurs variables d'environnement que l'on peut utiliser.
+On va donc donner au conteneurs les valeurs des differents mots de passe et utilisateurs
+qui doivent exister sur cette base.
+
+On cree un autre service pour wordpress:
+- On met l'argument depends_on pour creer une dependance entre deux conteneurs.
+Ainsi docker demarrera le service db avant celui de wordpress. Ce qui est bien 
+car Wordpress depend de sa base de donnees.
+- On definit le port:
+	ports:
+		- "8000:80"
+ports permet de dire a Docker Compose qu'on veut exposer un port de notre machine hote
+vers notre conteneur et ainsi le rendre accessible depuis l'exterieur.
+
+LANCER LE STACK DOCKER COMPOSE:
+	docker-compose up -d
+Lors de l'execution de cette commande, Docker compose commence par verifier 
+si nous disposons bien en local des images necessaires au lancement des stacks.
+Dans le cas contraire, il les telecharge depuis une registry ou les build
+via un docker build.
+Puis celui-ci lance les deux containers sur notre systeme.
+On peut voir le resultat via: http://127.0.0.1:8000.
+
+Syntaxe du docker-compose.yml:
+Ca fonctionne par deux espaces l'indentation.
+Pas d'espaces inutiles entre les lignes.
+Faire tres attention a la syntaxe.
+
+
+
+
+
+
+
+
 
 
