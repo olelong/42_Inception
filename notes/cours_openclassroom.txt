@@ -352,10 +352,27 @@ Pas d'espaces inutiles entre les lignes.
 Faire tres attention a la syntaxe.
 
 
+PROCHAIN PROJET:
+Histoire: Jean, un de vos amis, est développeur dans une école d'informatique. 
+Il vient tout juste de finaliser son premier projet en Python. 
+Il s’agit d’une API qui va permettre d’enregistrer des élèves dans une base de données Redis.
+Avant d’avancer plus loin dans son code, il vous demande s'il est possible d’utiliser 
+Docker pour pouvoir présenter son application à ses collègues depuis n’importe quel poste 
+informatique. En effet, ces derniers ne travaillent pas tous sous le même système d’exploitation.
+Jean vous a partagé son dossier de projet où vous retrouverez l’ensemble de son code. 
+Il vous recommande de lire en priorité le fichier README pour prendre connaissance des 
+prérequis nécessaires au bon fonctionnement du code :
+	Python 3.8 ou supérieur ;
+	Une base de données Redis.
 
-
-
-
+BUT:
+	Utiliser les images de redis et python.
+	Erreur de connexion a Redis normale.
+	1. Creer une image du code avec un Dockerfile.
+	2. Faire tourner ce code a l'aide d'une base de donnee Redis avec un fichier
+	docker-compose.
+	
+Une fois fait, visiter l'API en tapant localhost:5000.
 
 
 
