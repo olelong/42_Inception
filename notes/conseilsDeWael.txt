@@ -1,0 +1,26 @@
+	  		   --- LES CONSEILS DE WAEL ---
+
+1. Commencer par le container wordpress.
+Pour le moment juste faire le dockerfile et pouvoir faire 
+localhost:8080(ou autre port)
+et arriver sur la page de wordpress.
+Installer, configurer, lancer.
+Ne pas lancer wordpress en premier plan avec daemon off.
+
+Pas utilise de tail -f, boucle infinie.
+Donc utilise php-fpm pour faire lancer php-fpm en 
+premier plan.
+Mode one process ou daemon off = process qui tourne en 
+premier plan.
+
+Pour le moment juste dockerfile donc pas de COPY.
+RUN installer.
+RUN configurer : telecharger et installer au bon endroit 
+les fichiers du site de wordpress pas le mien.
+CMD lancer.
+
+
+Docker ps -q  : -q Affiche que les id et ps demandé d’afficher tout les conteneurs actifs 
+Docker ps -aq  : afficher tous les id de tous les conteneurs actifs ou non (-q : affiche id, -a: tous les conteneurs existant) 
+Docker stop $(docker ps -q)  : arrêter les conteneurs actifs via leurs id 
+Docker rm $(docker ps -aq)  : supprimer tous les conteneurs restant 
