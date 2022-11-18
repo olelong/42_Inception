@@ -383,3 +383,5 @@ apt-get flag -y:
            abort. Configuration Item: APT::Get::Assume-Yes.  
 
 
+Dernier exercice sur python - redis : Le resultat renvoie sur une erreur de connexion Redis
+mais c'est normal.
