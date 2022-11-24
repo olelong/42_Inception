@@ -94,6 +94,7 @@ La Prochaine Etape:
 - Regarder commandes mariadb - mysql.
 - Reflechir a comment ajouter un user, ajouter une database et comment lui donner tous les droits sur la database
 avec les commandes sql.
+Creer une database et la relie a un user/password host.
 - Reflechir a comment ajouter ce que j ai fait dans les commandes du bash du conteneur en sql pour les mettre dans un fichier ou autre.
 - Comment connecter db et wordpress?
 - mysql_secure_installation
