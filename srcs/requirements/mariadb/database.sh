@@ -21,6 +21,12 @@ mysql -e "FLUSH PRIVILEGES;"
 
 MYSQL_SCRIPT
 
+mysql << EOF
+CREATE DATABASE wp;
+USE wp;
+CREATE_TABLE
+EOF
+
 echo "MySQL user"
 echo "Username:   root"
 
