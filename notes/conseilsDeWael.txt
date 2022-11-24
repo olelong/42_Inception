@@ -89,10 +89,16 @@ Probleme de connexion au port car rien ai lance sur le port 8080:
 							STEP 2:
 
 La Prochaine Etape:
-- Faire mariadb. 
+	Faire mariadb. 
 - Install mariadb.
 - Regarder commandes mariadb - mysql.
 - Reflechir a comment ajouter un user, ajouter une database et comment lui donner tous les droits sur la database
 avec les commandes sql.
 - Reflechir a comment ajouter ce que j ai fait dans les commandes du bash du conteneur en sql pour les mettre dans un fichier ou autre.
 - Comment connecter db et wordpress?
+- mysql_secure_installation
+
+
+
+- Optimiser dockerfile
+- Creer un certificat SSL
