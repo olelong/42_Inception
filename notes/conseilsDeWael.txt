@@ -1,5 +1,8 @@
 	  		   --- LES CONSEILS DE WAEL ---
 
+
+						STEP 1:
+
 1. Commencer par le container wordpress.
 Pour le moment juste faire le dockerfile et pouvoir faire 
 localhost:8080(ou autre port)
@@ -17,10 +20,79 @@ Pour le moment juste dockerfile donc pas de COPY.
 RUN installer.
 RUN configurer : telecharger et installer au bon endroit 
 les fichiers du site de wordpress pas le mien.
-CMD lancer.
+CMD lancer. Lancer en premier plan php-fpm.
 
 
 Docker ps -q  : -q Affiche que les id et ps demandé d’afficher tout les conteneurs actifs 
 Docker ps -aq  : afficher tous les id de tous les conteneurs actifs ou non (-q : affiche id, -a: tous les conteneurs existant) 
 Docker stop $(docker ps -q)  : arrêter les conteneurs actifs via leurs id 
-Docker rm $(docker ps -aq)  : supprimer tous les conteneurs restant 
+Docker rm $(docker ps -aq)  : supprimer tous les conteneurs restant
+
+Les volumes sont dans la machine comme ce fichier /etc/host.
+
+/etc/hosts -> Modifier pour rajouter en localhost olelong.42.fr
+Voir pour faire fonctionner ca mais dans nginx.
+
+
+- Dois je creer le dossier moi meme dans ma machine au prealable? /var/www/.. 
+- Les dossiers sont dans le conteneur donc rien ne se passe dans la machine tout est dans les conteneurs
+donc utiliser la commande run -it id pour acceder au terminal de ce conteneur.
+- Normal qu'il y'ai rien dans le docker ps apres le run? oui car a fait ce qu'il y avait a faire puis s est arrete.
+Voir ca avec la commande docker ps -a.
+- Erreur rm images ? Oui il faut meme si le conteneur est arrete le supprimer avant de supprimer l'image
+car le conteneur meme inactif utilise l'image.
+
+Wordpress c'est juste des fichiers pas un service. Donc on ne peut pas lancer wordpress.
+
+docker run -it: Lance le contenu du conteneur dans un shell
+docker run -it bash: Commande bash remplace la CMD de mon dockerfile du coup
+si ma CMD ne fonctionne pas il lance quand meme le bash.
+
+
+Port 80: port par defaut du protocole HTTP. 
+Port 443: port par defaut HTTPS
+
+Docker run -p [hostPort]:[containerPort] id
+http://localhost:hostPort
+
+LAUNCH:
+docker run -p 8080:81 ok
+Probleme de connexion au port car rien ai lance sur le port 8080:
+	```
+	docker exec -ti id bash
+		apt-get install net-tools
+		netstat -anpe | grep 80
+	```
+	On accede au bash du conteneur et on install un outil
+	pour pouvoir voir les ports et leurs utilisations.
+	netsat -anpe montre tous les ports et leurs utilisations
+	du coup pour le moment le port 80 est inutilise d'ou le fait
+	que rien ne se lance lorsque l'on va sur la page web: 
+	localhost:8080.
+
+	Pour pouvoir lancer notre wordpress, il faut lancer
+	apache2 qui est installe par defaut et changer la root des 
+	fichiers d'apache2 vers notre dossier /var/www/html/ qui contient
+	tous les fichiers de wordpress. 
+	Dans ce cas la, pour le moment lorsque l'on va sur la page web
+	du localhost au port 8080, le port est utilise mais n'affiche 
+	que la page par defaut d'apache2.
+
+	Pour resoudre ca, dans le dockerfile on supprime le fichier index.html
+	dans /var/www/html avant de telecharger wordpress car wordpress n'a pas
+	d'index.html mais un index.php du coup il ne reecrira pas dessus et l'index.html
+	contient la page par defaut apache2.
+
+
+
+
+							STEP 2:
+
+La Prochaine Etape:
+- Faire mariadb. 
+- Install mariadb.
+- Regarder commandes mariadb - mysql.
+- Reflechir a comment ajouter un user, ajouter une database et comment lui donner tous les droits sur la database
+avec les commandes sql.
+- Reflechir a comment ajouter ce que j ai fait dans les commandes du bash du conteneur en sql pour les mettre dans un fichier ou autre.
+- Comment connecter db et wordpress?
