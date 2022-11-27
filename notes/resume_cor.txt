@@ -26,3 +26,46 @@ VOIR POUR FAIRE DES VOLUMES PERSISTANTS:
 Car sinon a chaque fois ca creera un nouveau dossier pour les donnees et meme
 en fermant ou detruisant le conteneur les volumes anciens resteront la et ne seront pas \
 supprimes.
+
+
+
+
+
+27/11/2022:
+
+Wordpress cli remplacerait le telechargement de wordpress en tar
+et tout car si un jour wordpress se met a jour mon wordpress ne 
+fonctionnera plus.
+Utiliser wordpress cli: 
+l'installer puis utiliser des commandes pour directement le 
+configurer en utilisant les variables d'environnement et tout.
+Ce qui permet d avoir un wordpress toujours a jours et 
+facilement configure. De plus ca permet d avoir peu de choses
+a faire dans la base de donnes.
+Dans maria db: Creer la database, le deuxieme user non admin, 
+changer le mdp par defaut root. 
+Utiliser des trucs du genre If doesn t exist pour eviter de recreer
+une base de donnee existante.
+
+
+Ne pas expose les volumes autre que 443 dans les dockerfile.
+
+build: dans le docker compose pour dire ou est le dockerfile de l'image
+
+Volume: faire difference pour les point de montage entre la ou il est 
+vraiment et la ou on veut qu il soit.
+
+Wordpress: 
+Utiliser nginx plutot qu apache pour eviter 
+d avoir des trucs a faire specifiquement pour apache.
+chown les droit du user pqr defaut mysql au dossier /var/run/mysqld
+comme j'ai fait devrait suffire pour que la socket qui est creer
+fonctionne donc peut etre retirer le echo "socket.."..
+
+Peut etre qu il me manquera des package pour php-fpm.
+
+php-fpm permet de faire le lien entre le serveur web et php. 
+Il renvoie a worpress les fichiers en php pour que wordpress puisse
+les utiliser.
+
+
