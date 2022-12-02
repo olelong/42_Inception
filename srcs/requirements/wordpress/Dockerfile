@@ -1,18 +1,13 @@
 FROM debian:buster
 
 # Installation of wordpress and php-fpm
-RUN apt-get update \
-	&& apt-get upgrade \
-	&& apt-get install wordpress -y \
-	&& apt-get install wget \
-	&& apt-get install php-cli php-mysql -y \
-	&& apt-get install php-curl php-gd php-intl  -y \
-	&& apt-get install php-fpm -y
-
-
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-	&& chmod +x wp-cli.phar \
-	&& mv wp-cli.phar /usr/local/bin/wp
+RUN apt-get update -q \
+	&& apt-get upgrade -q \
+	&& apt-get install wordpress -yq \
+	&& apt-get install wget -q \
+	&& apt-get install php-cli php-mysql -yq \
+	&& apt-get install php-curl php-gd php-intl  -yq \
+	&& apt-get install php-fpm -yq
 
 
 # Configure
@@ -24,13 +19,13 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 ## Donne tous les droits a www-data appartenant au groupe www:data de maniere recursive
 ## sur le contenu du dossier html.
 
-#RUN	rm /var/www/html/index.html \
-#	&& wget https://wordpress.org/latest.tar.gz \
-#	&& tar -xvf latest.tar.gz \
-#	&& rm latest.tar.gz \
-#	&& mv /wordpress/* /var/www/html/ \
-#	&& chown -R www-data:www-data /var/www/html/ \
-#	&& mkdir -p /run/php
+RUN	rm /var/www/html/index.html \
+	&& wget https://wordpress.org/latest.tar.gz \
+	&& tar -xvf latest.tar.gz \
+	&& rm latest.tar.gz \
+	&& mv /wordpress/* /var/www/html/ \
+	&& chown -R www-data:www-data /var/www/html/ \
+	&& mkdir -p /run/php
 
 
 EXPOSE 9000
