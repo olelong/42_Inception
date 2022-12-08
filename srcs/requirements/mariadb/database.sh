@@ -28,7 +28,3 @@ GRANT ALL PRIVILEGES ON 'wp' TO 'user'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
-echo "MySQL user"
-echo "Username:   root"
-
-

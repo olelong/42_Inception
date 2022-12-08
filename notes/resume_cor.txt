@@ -48,7 +48,11 @@ Utiliser des trucs du genre If doesn t exist pour eviter de recreer
 une base de donnee existante.
 
 
-Ne pas expose les volumes autre que 443 dans les dockerfile.
+Ne pas expose les volumes autre que 443 dans les dockerfile. => au final si 
+car le but est aussi de pouvoir utiliser les volumes en dehors du projet et 
+donc c est mieux d'indiquer quand meme le expose. Surtout qu'avec
+le docker compose le expose dans les dockerfile devient facultatif et
+non utilise lors du build.
 
 build: dans le docker compose pour dire ou est le dockerfile de l'image
 
