@@ -101,6 +101,40 @@ Trouver comment daemon off mysql.
 - mysql_secure_installation
 
 
+Prochaines Etapes:
+						mysql / mysql -u root (ne doit pas marcher)
+						mysql -u root -p
+						mysql -u user -p
+- Ca fonctionne de se connecter avec root : OK
+- Faire en sorte que je puisse pas me connecter a mysql sans user ou root (juste "mysql").
+- Lie au pb du dessus surement mais je dois forcement passer par le mdp pour me connecter
+a root ou user. Exemple: mysql -u root ne doit pas fonctionner il faut mysql -u root -p (car le -p propose le mdp).
+- Faire en sorte que je puisse me connecter avec le user.
 
-- Optimiser dockerfile
-- Creer un certificat SSL
+
+						Publish sur le port 443:443
+						https://localhost : advertisement for autosigned certificat
+- Configurer nginx avec https : certificat auto signe etc.
+
+						Pour tester wordpress, bien publish sur le port 8080:80 (80 car wordpress tourne grace a apache pour le moment qui est sur le port 80(port HTTP par defaut)) 
+						Connection a la base de donnee grace au docker network et au fait qu on indique dans le fichier de config de wordpress ou il doit se connecter pour se connecter a la base de donnee (donc 3306, avec aussi le host-name: mariadb, le user et le mdp)
+						Ne dois plus afficher la configuration de la base de donnees lors de la creation du site.
+- Lier worpress a la database avec le fichier wp-config.php (cote wordpress). Dire a wordpress ou aller chercher 
+la database. 
+
+						SHOW DATABASE
+						Verifier avec des fausses connections et fausses databases et si il y a erreur c'est que ca fonctionne.
+						Connection user
+- Faire fonctionner avec le .env. Pour wordpress, dans le fichier /etc/php/7.3/fpm/pool.d/www.conf => Ligne avec ecrit "; clear _env = no" => Enlever le ";". Car ; = un commentaire donc on l'enleve pour eviter qu'il clear l'environnement.
+A faire dans le conteneur donc soit en copiant le fichier avec le ; en moins soit en faisant une commande Sed.
+
+- Lier nginx a wordpress et aussi son volume(dans docker-compose). Grace a php-fpm on peut lier les deux.
+Comment mettre un cgi a php?
+
+- Faire /etc/hosts et dans nginx fichier de configuration.
+- Optimiser dockerfile.
+
+
+
+
+- Creer un certificat SSL.
