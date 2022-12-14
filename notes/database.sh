@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-mysqld 2> /dev/null & sleep 5
+service mysql start
 
-mysql 2> /dev/null << EOF
+mysql << EOF
 CREATE DATABASE wp;
 USE wp;
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'pass';
@@ -13,9 +13,8 @@ GRANT ALL PRIVILEGES ON 'wp' TO 'user'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
-pkill mysqld
-mysqld
-#mysqld_safe #--user="mysql"
+service mysql stop
+mysqld_safe #--user="mysql"
 
 #CREATE DATABASE wp;
 #USE wp;

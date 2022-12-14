@@ -5,7 +5,8 @@ RUN apt-get update -q \
 	&& apt-get upgrade -q \
 	&& apt-get install mariadb-server -yq \
 	&& apt-get install vim -yq \
-	&& apt-get install expect -yq
+	&& apt-get install expect -yq \
+	&& apt-get install procps -yq
 
 
 # Configure
@@ -19,14 +20,5 @@ RUN mkdir -p /var/run/mysqld \
 
 COPY database.sh /
 
-RUN service mysql start \
-	&& chmod 777 database.sh  
-	#&& bash /database.sh
-	
-CMD ["bash", "/database.sh"]
+CMD bash /database.sh
 
-#CMD ./script.exp && mysqld_safe
-#CMD ["mysqld_safe"]
-#CMD ["sh","/database.sh"]["mysqld_safe"]
-#CMD ["sh","/database.sh"]["mysqld_safe"]
-#&& ['bash /var/run/mysqld/database.sh'];
