@@ -17,8 +17,16 @@ RUN mkdir -p /var/run/mysqld \
 	&& service mysql start \
 	&& ./script.exp
 
-COPY database.sh /var/run/mysqld/
+COPY database.sh /
 
+RUN service mysql start \
+	&& chmod 777 database.sh  
+	#&& bash /database.sh
+	
+CMD ["bash", "/database.sh"]
 
 #CMD ./script.exp && mysqld_safe
-CMD mysqld_safe 
+#CMD ["mysqld_safe"]
+#CMD ["sh","/database.sh"]["mysqld_safe"]
+#CMD ["sh","/database.sh"]["mysqld_safe"]
+#&& ['bash /var/run/mysqld/database.sh'];
