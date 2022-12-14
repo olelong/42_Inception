@@ -110,16 +110,24 @@ Prochaines Etapes:
 - Lie au pb du dessus surement mais je dois forcement passer par le mdp pour me connecter
 a root ou user. Exemple: mysql -u root ne doit pas fonctionner il faut mysql -u root -p (car le -p propose le mdp).
 - Faire en sorte que je puisse me connecter avec le user.
-
+- Regler pb de timeout de mysql, qui s'arrete au bout de quelques secondes.
 
 						Publish sur le port 443:443
 						https://localhost : advertisement for autosigned certificat
 - Configurer nginx avec https : certificat auto signe etc.
 
-						Pour tester wordpress, bien publish sur le port 8080:80 (80 car wordpress tourne grace a apache pour le moment qui est sur le port 80(port HTTP par defaut)) 
-						Connection a la base de donnee grace au docker network et au fait qu on indique dans le fichier de config de wordpress ou il doit se connecter pour se connecter a la base de donnee (donc 3306, avec aussi le host-name: mariadb, le user et le mdp)
-						Ne dois plus afficher la configuration de la base de donnees lors de la creation du site.
-- Lier worpress a la database avec le fichier wp-config.php (cote wordpress). Dire a wordpress ou aller chercher 
+						Pour tester wordpress, bien publish sur le port 8080:80 
+						(80 car wordpress tourne grace a apache pour le moment 
+						qui est sur le port 80(port HTTP par defaut)) 
+						Connection a la base de donnee grace au docker network 
+						et au fait qu on indique dans le fichier de config de 
+						wordpress ou il doit se connecter pour se connecter a 
+						la base de donnee (donc 3306, avec aussi le host-name: 
+						mariadb, le user et le mdp)
+						Ne dois plus afficher la configuration de la base de 
+						donnees lors de la creation du site.
+- Lier worpress a la database avec le fichier wp-config.php (cote wordpress). 
+Dire a wordpress ou aller chercher 
 la database. 
 
 						SHOW DATABASE
@@ -131,7 +139,7 @@ A faire dans le conteneur donc soit en copiant le fichier avec le ; en moins soi
 - Lier nginx a wordpress et aussi son volume(dans docker-compose). Grace a php-fpm on peut lier les deux.
 Comment mettre un cgi a php?
 
-- Faire /etc/hosts et dans nginx fichier de configuration.
+- Faire /etc/hosts et dans nginx fichier de configuration. (en local non? pas dans le conteneur)
 - Optimiser dockerfile.
 
 
