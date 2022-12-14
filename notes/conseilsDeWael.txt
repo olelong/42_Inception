@@ -110,7 +110,9 @@ Prochaines Etapes:
 - Lie au pb du dessus surement mais je dois forcement passer par le mdp pour me connecter
 a root ou user. Exemple: mysql -u root ne doit pas fonctionner il faut mysql -u root -p (car le -p propose le mdp).
 - Faire en sorte que je puisse me connecter avec le user.
-- Regler pb de timeout de mysql, qui s'arrete au bout de quelques secondes.
+- Regler pb de timeout de mysql, qui s'arrete au bout de quelques secondes.: OK
+
+- Donner acces a la database au user.
 
 						Publish sur le port 443:443
 						https://localhost : advertisement for autosigned certificat
