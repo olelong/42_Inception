@@ -1,20 +1,20 @@
 #!/bin/bash
 
-mysqld 2> /dev/null & sleep 5
+mysqld & sleep 5
 
-mysql 2> /dev/null << EOF
+mysql << EOF
 CREATE DATABASE wp;
 USE wp;
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'pass';
 GRANT ALL PRIVILEGES ON wp TO 'root'@'localhost';
 FLUSH PRIVILEGES;
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';
-GRANT ALL PRIVILEGES ON 'wp' TO 'user'@'localhost';
+GRANT ALL PRIVILEGES ON wp TO 'user'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
 pkill mysqld
-mysqld_safe
+mysqld
 
 # Lancer mysqld et on redirige stderr vers un fichier null
 # ce qui permet de ne pas afficher les erreurs.
