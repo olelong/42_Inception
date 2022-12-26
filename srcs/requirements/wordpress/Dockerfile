@@ -27,6 +27,7 @@ RUN	rm /var/www/html/index.html \
 	&& chown -R www-data:www-data /var/www/html/ \
 	&& mkdir -p /run/php
 
+COPY wp-config.php /var/www/html/
 
 EXPOSE 9000
 
