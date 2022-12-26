@@ -118,16 +118,16 @@ a root ou user. Exemple: mysql -u root ne doit pas fonctionner il faut mysql -u 
 						https://localhost : advertisement for autosigned certificat
 - Configurer nginx avec https : certificat auto signe etc.
 
-						Pour tester wordpress, bien publish sur le port 8080:80 
-						(80 car wordpress tourne grace a apache pour le moment 
-						qui est sur le port 80(port HTTP par defaut)) 
-						Connection a la base de donnee grace au docker network 
-						et au fait qu on indique dans le fichier de config de 
-						wordpress ou il doit se connecter pour se connecter a 
-						la base de donnee (donc 3306, avec aussi le host-name: 
-						mariadb, le user et le mdp)
-						Ne dois plus afficher la configuration de la base de 
-						donnees lors de la creation du site.
+		Pour tester wordpress, bien publish sur le port 8080:80 
+		(80 car wordpress tourne grace a apache pour le moment 
+		qui est sur le port 80(port HTTP par defaut)) 
+		Connection a la base de donnee grace au docker network 
+		et au fait qu on indique dans le fichier de config de 
+		wordpress ou il doit se connecter pour se connecter a 
+		la base de donnee (donc 3306, avec aussi le host-name: 
+		mariadb, le user et le mdp)
+		Ne dois plus afficher la configuration de la base de 
+		donnees lors de la creation du site.
 - Lier worpress a la database avec le fichier wp-config.php (cote wordpress). 
 Dire a wordpress ou aller chercher 
 la database. 
