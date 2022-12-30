@@ -1,5 +1,12 @@
 version: '3.8'
 services:
+    nginx:
+        image: nginx
+        build: ./requirements/nginx/
+        ports:
+            - "443:443"
+        volumes:
+        restart: always
     wordpress:
         image: wordpress
         build: ./requirements/wordpress/
@@ -7,8 +14,14 @@ services:
             - mariadb
         ports: 
             - "8080:80"
+        volumes:
         restart: always
+        env_file:
+            - .env
     mariadb:
         image: mariadb
         build: ./requirements/mariadb/
+        volumes:
         restart: always
+        env_file: 
+            - .env

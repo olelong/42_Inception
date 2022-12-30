@@ -1,0 +1,25 @@
+FROM debian:buster 
+
+RUN apt-get update -yq \ 
+    && apt-get install wordpress php-fpm -yq \ 
+    && apt-get install wget zip -yq \ 
+    && apt-get clean -y 
+
+COPY wp-config.php /var/www/html/ 
+WORKDIR /var/www/html 
+
+RUN rm index.html \ 
+    && wget https://wordpress.org/latest.zip \ 
+    && unzip latest.zip \ 
+    && rm latest.zip \ 
+    && mv wordpress/* . \ 
+    && rm -rf wordpress \ 
+    && chown -R www-data:www-data /var/www/html \ 
+    && sed 's/listen = .*/listen = 9000/' -i /etc/php/7.3/fpm/pool.d/www.conf \ 
+    && sed 's/;clear_env = no/clear_env = no/' -i /etc/php/7.3/fpm/pool.d/www.conf \ 
+    && mkdir -p /run/php 
+
+EXPOSE 9000 
+
+CMD  service apache2 start && php-fpm7.3 -F
+
