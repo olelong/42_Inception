@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+	nginx:
+		image: nginx
+		build: 
+			dockerfile: ./srcs/requirements/nginx/Dockerfile
+		ports: 
+			- "443:443"
+		volumes:
+		restart: always
+
+	wordpress:
+		image: wordpress
+		build: 
+			dockerfile: ./srcs/requirements/wordpress/Dockerfile
+		depends_on :
+			- mariadb
+		ports: 
+			- "9000"
+		volumes:
+		restart: always
+
+
+	mariadb:
+		image: mariadb
+		build: 
+			dockerfile: ./srcs/requirements/mariadb/Dockerfile
+		ports: 
+			- "3306"
+		volumes: db_data
+		restart: always
+		environment: .env
+
+secrets:
+	ssh_key:
+		file: 
+
+network:
+	inception:		
