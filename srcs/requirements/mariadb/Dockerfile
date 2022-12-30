@@ -7,7 +7,6 @@ FROM debian:buster
 RUN apt-get update -q \
 	&& apt-get upgrade -q \
 	&& apt-get install mariadb-server -yq \
-	&& apt-get install vim -yq \
 	&& apt-get install expect -yq \
 	&& apt-get install procps -yq
 
@@ -28,6 +27,10 @@ RUN mkdir -p /var/run/mysqld \
 
 	# Add in the container the script for create the databse
 COPY database.sh /
+
+	# Change the port and the bind-adress to connect
+	# mysql at port 3306 and at my container ip
+COPY 50-server.cnf /etc/mysql/mariadb.conf.d/
 
 	# Launch the script to create the database and
 	# launch mysql

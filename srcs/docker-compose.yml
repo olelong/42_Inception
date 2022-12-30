@@ -2,17 +2,13 @@ version: '3.8'
 services:
     wordpress:
         image: wordpress
-        build: 
-            dockerfile: ./requirements/wordpress/Dockerfile
+        build: ./requirements/wordpress/
         depends_on :
             - mariadb
         ports: 
-            - "9000"
+            - "8080:80"
         restart: always
     mariadb:
         image: mariadb
-        build: 
-            dockerfile: ./requirements/mariadb/Dockerfile
-        ports: 
-            - "3306"
+        build: ./requirements/mariadb/
         restart: always

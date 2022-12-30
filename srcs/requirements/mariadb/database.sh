@@ -6,10 +6,10 @@ mysql << EOF
 CREATE DATABASE wp;
 USE wp;
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'pass';
-GRANT ALL PRIVILEGES ON wp TO 'root'@'localhost';
+GRANT ALL PRIVILEGES ON wp.* TO 'root'@'localhost';
 FLUSH PRIVILEGES;
-CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';
-GRANT ALL PRIVILEGES ON wp TO 'user'@'localhost';
+CREATE USER 'user'@'%' IDENTIFIED BY 'pass';
+GRANT ALL PRIVILEGES ON wp.* TO 'user'@'%';
 FLUSH PRIVILEGES;
 EOF
 
