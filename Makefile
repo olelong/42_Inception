@@ -1,15 +1,15 @@
-NAME	= inception
+NAME = inception
 
-# On ajoute la règle install pour éviter de rebuild les containers 
-# et de réinstaller les dépendances à chaque lancement du projet.
-install: # Containers construits et les dépendances logicielles installées
-	docker-compose build
-	docker-compose run --no-deps --rm application composer install	
+all:
+	docker compose -f srcs/docker-compose.yml up --build
 
-start:	# Lorsque le logiciel a été lancé
-	docker-compose up -d
+clean:
+	docker compose -f srcs/docker-compose.yml down
 
-stop:	# Lorsque le logiciel a été arrêté
-	docker-compose down
+fclean: clean
+	-docker image rm mariadb wordpress nginx 2> /dev/null
+	yes | docker system prune -f
 
-.PHONY:    install start stop
+re: fclean all
+
+.PHONY:    all clean fclean re
