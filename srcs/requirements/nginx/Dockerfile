@@ -5,7 +5,6 @@ RUN apt-get update -q \
 && apt-get install nginx -yq
 
 COPY conf/* /etc/nginx/
-COPY nginx.conf /etc/nginx/
 
 EXPOSE 443
 

@@ -3,25 +3,45 @@ services:
     nginx:
         image: nginx
         build: ./requirements/nginx/
+        depends_on:
+            - wordpress
         ports:
             - "443:443"
         volumes:
-        restart: always
+            - WordPress:/var/www/html:ro
+        restart: on-failure
+    
     wordpress:
         image: wordpress
         build: ./requirements/wordpress/
-        depends_on :
+        depends_on:
             - mariadb
-        ports: 
-            - "8080:80"
         volumes:
-        restart: always
+            - WordPress:/var/www/html
+        restart: on-failure
         env_file:
             - .env
+    
     mariadb:
         image: mariadb
         build: ./requirements/mariadb/
         volumes:
-        restart: always
+            - DB:/var/lib/mysql
+        restart: on-failure
         env_file: 
             - .env
+
+volumes:
+    WordPress:
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/olelong/data/wp_data
+    DB:
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/olelong/data/db_data
+
+networks:
+    inception:

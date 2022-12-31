@@ -19,7 +19,7 @@ RUN apt-get update -q \
 ## Donne tous les droits a www-data appartenant au groupe www:data de maniere recursive
 ## sur le contenu du dossier html.
 
-COPY wp-config.php /var/www/html/
+COPY conf/wp-config.php /var/www/html/
 
 RUN	rm /var/www/html/index.html \
 	&& wget https://wordpress.org/latest.tar.gz \
@@ -30,7 +30,7 @@ RUN	rm /var/www/html/index.html \
 	&& mkdir -p /run/php
 
 
-COPY www.conf /etc/php/7.3/fpm/pool.d/
+COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
 
 EXPOSE 9000
 
@@ -38,4 +38,3 @@ EXPOSE 9000
 CMD php-fpm7.3 --nodaemonize
 
 
-# A la fin optimisation -> mettre toutes les commandes run en une

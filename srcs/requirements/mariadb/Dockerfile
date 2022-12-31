@@ -14,7 +14,7 @@ RUN apt-get update -q \
 # Configure
 	# Add in the container an expect script with responses
 	# for mysql_secure_installation
-COPY script.exp .
+COPY conf/script.exp .
 
 	# Add the socket in the file my.cnf
 	# Administrate rights for the folder mysqld
@@ -26,11 +26,11 @@ RUN mkdir -p /var/run/mysqld \
 	&& ./script.exp
 
 	# Add in the container the script for create the databse
-COPY database.sh /
+COPY conf/database.sh /
 
 	# Change the port and the bind-adress to connect
 	# mysql at port 3306 and at my container ip
-COPY 50-server.cnf /etc/mysql/mariadb.conf.d/
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 
 	# Launch the script to create the database and
 	# launch mysql
