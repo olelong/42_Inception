@@ -39,6 +39,18 @@ MYSQL_PASSWORD=
 
 ### Launch
 
+Clone the repository:
+```bash 
+git clone git@github.com:olelong/42_Inception.git
+```
+
+Enter the folder:
+```bash
+cd 42_Inception
+```
+
+Then compile:
+
 ```
 make
 ```
@@ -93,6 +105,16 @@ MYSQL_PASSWORD=
 
 
 ### Pour lancer les conteneurs.
+
+Cloner le repository:
+```bash 
+git clone git@github.com:olelong/42_Inception.git
+```
+
+Entrer dans le dossier:
+```bash
+cd 42_Inception
+```
 
 ```
 make
