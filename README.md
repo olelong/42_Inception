@@ -1,8 +1,12 @@
 # 42_Inception
 
+<p align="left"> *************************** ENGLISH *************************** </p>
 
-This file allows us to make a link with all the other tools and to frame 
-our development environment using communication tools.
+## The Project
+This project involves creating an infrastructure with different services running in separate 
+Docker containers, following specific rules such as the use of Docker-compose, creating custom 
+Dockerfiles, using Debian Buster, creating volumes for the WordPress database 
+and site files, and establishing a docker-network for container communication.
 
 ## Dev Environment
 
@@ -64,10 +68,18 @@ The project should be now successfully running.
 make fclean
 ```
 
-*********************************** FRENCH ********************************************
+## License
 
-Ce fichier nous permet de faire le lien avec tous les autres outils et d'encadrer 
-notre environnement de développement en utilisant des outils de communication.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+<p align="left"> *************************** FRANCAIS *************************** </p>
+
+## Le Projet
+
+Ce projet consiste à créer une infrastructure composée de différents services exécutés dans des conteneurs 
+Docker distincts, en respectant des règles précises telles que l'utilisation de Docker-compose, la création 
+des propres Dockerfiles, l'utilisation de Alpine Linux ou Debian Buster, la création de volumes pour la base 
+de données et les fichiers du site, et la mise en place d'un docker-network pour la communication entre les conteneurs.
 
 ## Environnement de développement
 
@@ -129,3 +141,6 @@ Le projet devrait maintenant être lancé avec succès.
 make fclean
 ```
 
+## Licence
+
+Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
