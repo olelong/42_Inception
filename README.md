@@ -12,7 +12,19 @@ and site files, and establishing a docker-network for container communication.
 
 This project uses Docker (docker-compose version 3.8) to manage the local development environment.
 
-### Requirements
+## How does it works :
+
+#### Clone the repository
+
+Clone the repository:
+```bash 
+git clone git@github.com:olelong/42_Inception.git
+```
+
+Enter the folder:
+```bash
+cd 42_Inception
+```
 
 #### Hosts Configuration
 
@@ -43,17 +55,7 @@ MYSQL_PASSWORD=
 
 ### Launch
 
-Clone the repository:
-```bash 
-git clone git@github.com:olelong/42_Inception.git
-```
-
-Enter the folder:
-```bash
-cd 42_Inception
-```
-
-Then compile:
+Compile:
 
 ```
 make
@@ -87,7 +89,19 @@ de données et les fichiers du site, et la mise en place d'un docker-network pou
 
 Ce projet utilise Docker (docker-compose version 3.8) pour gérer l'environnement de développement local.
 
-### Exigences
+## Comment ça marche : 
+
+#### Clone le repository
+
+Cloner le repository:
+```bash 
+git clone git@github.com:olelong/42_Inception.git
+```
+
+Entrer dans le dossier:
+```bash
+cd 42_Inception
+```
 
 #### Configuration des hosts 
 
@@ -119,16 +133,6 @@ MYSQL_PASSWORD=
 
 
 ### Pour lancer les conteneurs.
-
-Cloner le repository:
-```bash 
-git clone git@github.com:olelong/42_Inception.git
-```
-
-Entrer dans le dossier:
-```bash
-cd 42_Inception
-```
 
 ```
 make
