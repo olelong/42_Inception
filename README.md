@@ -12,7 +12,7 @@ and site files, and establishing a docker-network for container communication.
 
 This project uses Docker (docker-compose version 3.8) to manage the local development environment.
 
-## How does it works :
+## How does it works
 
 #### Clone the repository
 
