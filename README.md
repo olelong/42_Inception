@@ -105,7 +105,7 @@ Entrer dans le dossier:
 cd 42_Inception
 ```
 
-#### Configuration des hosts 
+#### Configuration des hosts  
 
 Vous devez avoir cette ligne dans votre fichier `/etc/hosts` :
 
