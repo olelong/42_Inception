@@ -11,6 +11,7 @@ and site files, and establishing a docker-network for container communication.
 ## Dev Environment
 
 This project uses Docker (docker-compose version 3.8) to manage the local development environment.
+To run this project, use a virtual machine.
 
 ## How does it works
 
@@ -88,6 +89,7 @@ de données et les fichiers du site, et la mise en place d'un docker-network pou
 ## Environnement de développement
 
 Ce projet utilise Docker (docker-compose version 3.8) pour gérer l'environnement de développement local.
+Pour lancer ce projet utiliser une machine virtuelle.
 
 ## Comment ça marche : 
 
